@@ -3,12 +3,20 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>sr.jmeter.jwt</groupId>
-  <artifactId>jmeter-jwt-preProcessor</artifactId>
+  <artifactId>jmeter_jwt_pre_processor</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>jmeter-plugins-jwt-preProcessor</name>
-  <url>http://maven.apache.org</url>
+  <name>jmeter_plugins_jwt_pre_processor</name>
+  <url>https://maven.pkg.github.com/sashikaR/jwt-preProcessor</url>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub sashikaR Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/sashikaR/jwt-preProcessor</url>
+    </repository>
+  </distributionManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
