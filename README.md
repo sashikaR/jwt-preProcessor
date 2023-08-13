@@ -2,9 +2,9 @@
 A Jmeter pre-processor plugin. 
 
 ## Overview
-This is a pre-processor plugin to generate Java Web Token (JWT). When a JWT requires as a pre-requisite
+This is a Jmeter pre-processor plugin that can generate Java Web Token (JWT). When a JWT requires as a pre-requisite
 to send an HTTP request, this plugin can generate the JWT based on the details provided by
-the user. The JWT token is stored in a Jmeter variable which can use in other samplers.
+the user. The JWT token is stored in a Jmeter variable which can use in the following samplers.
 
 ### Step to use JWT-PreProcessor
 
@@ -15,9 +15,9 @@ the user. The JWT token is stored in a Jmeter variable which can use in other sa
 
 #### 1. Install Plugin
     a - Download the jar file and copy it into your <your-jmeter-folder>/lib/ext location and restart the
-        jmeter.
+        Jmeter.
     c - Download the project and execute mvn clean package command and it will build the jar in the target.
-        Note - You need to install Java and Maven in your development environment. This plugin is build
+        Note - You need to install Java and Maven in your development environment. This plugin is built
         and tested in JDK 17 and Jmeter 5.5 and 5.6 versions.
 
 #### 2. Add JWT-PreProcessor into the HTTP sampler
@@ -59,7 +59,7 @@ the user. The JWT token is stored in a Jmeter variable which can use in other sa
 
 #### 4. How to Use
 
-    a - Add Http Header Manager into the HTTP Sampler request. Create a one header request as a token and 
+    a - Add Http Header Manager into the HTTP Sampler request. Create a one-header request as a token and 
         give the Jwt Variable as the value.
 ![ScreenShot](images/image-7.png)
 
