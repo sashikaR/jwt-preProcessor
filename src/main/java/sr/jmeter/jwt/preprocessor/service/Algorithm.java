@@ -22,12 +22,15 @@ public enum Algorithm {
     }
 
     public static SignatureAlgorithm mapToSignatureAlgorithm(Algorithm algorithm) {
-        return switch (algorithm) {
-            case HS256 -> SignatureAlgorithm.HS256;
-            case RS256 -> SignatureAlgorithm.RS256;
+        switch (algorithm) {
+            case HS256:
+                return SignatureAlgorithm.HS256;
+            case RS256:
+                return SignatureAlgorithm.RS256;
             // Handle other cases
-            default -> throw new IllegalArgumentException("Unsupported algorithm: " + algorithm);
-        };
+            default:
+                throw new IllegalArgumentException("Unsupported algorithm: " + algorithm);
+        }
     }
 
 }

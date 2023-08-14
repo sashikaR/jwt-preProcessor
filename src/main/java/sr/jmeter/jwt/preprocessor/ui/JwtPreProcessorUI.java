@@ -110,7 +110,8 @@ public class JwtPreProcessorUI extends AbstractPreProcessorGui {
     @Override
     public void configure(TestElement testElement) {
         super.configure(testElement);
-        if (testElement instanceof JwtPreProcessor jwtPreProcessor) {
+        if (testElement instanceof JwtPreProcessor) {
+            JwtPreProcessor jwtPreProcessor = (JwtPreProcessor) testElement;
             // set secretKey
             txtFieldSecretKey.setText(jwtPreProcessor.getSecretKey());
 
