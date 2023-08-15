@@ -33,4 +33,17 @@ jobs:
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        
+    - name: Get JAR File Path
+      id: jar_path
+      run: echo "::set-output name=path::$(find . -name '*.jar')"
+          
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          files: ${{ steps.jar_path.outputs.path }}
+          tag_name: v1.0.1
+          release_name: Release 1.0.1
 
