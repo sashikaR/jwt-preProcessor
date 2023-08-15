@@ -14,7 +14,8 @@ the user. The JWT token is stored in a Jmeter variable which can use in the foll
 4. Use the variable whenever the JWT is required.
 
 #### 1. Install Plugin
-    a - Download the jar file and copy it into your <your-jmeter-folder>/lib/ext location and restart the
+    a - Install via Jmeter Plugin Manager. Just search JWT PreProcessor in the plugin manager and install it.
+    b - Download the jar file and copy it into your <your-jmeter-folder>/lib/ext location and restart the
         Jmeter.
     c - Download the project and execute mvn clean package command and it will build the jar in the target.
         Note - You need to install Java and Maven in your development environment. This plugin is built
