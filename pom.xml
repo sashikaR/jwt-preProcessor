@@ -122,7 +122,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>sr.jmeter.jwt.preprocessor.JwtPreProcessor</mainClass>
+               <!-- Exclude the Main-Class entry -->
             </manifest>
           </archive>
           <descriptorRefs>
