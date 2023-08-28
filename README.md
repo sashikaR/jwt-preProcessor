@@ -7,7 +7,7 @@ to send an HTTP request, this plugin can generate the JWT based on the details p
 the user. The JWT token is stored in a Jmeter variable which can use in the following samplers.
 
  Support:
-      For any issues / bugs or help, please add a comment in [wiki page](https://github.com/sashikaR/jwt-preProcessor).
+      For any issues / bugs or help, please add a comment in [wiki page](https://medium.com/@SashikaR/jwt-generator-for-jmeter-efe7a6e920a0).
       
 ### Step to use JWT-PreProcessor
 
