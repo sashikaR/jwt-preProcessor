@@ -14,8 +14,8 @@ the user. The JWT token is stored in a Jmeter variable which can use in the foll
 4. Use the variable whenever the JWT is required.
 
 #### Plugin Support
-    - For any issues / Bugs or help, please add a comment in below page.
-      https://github.com/sashikaR/jwt-preProcessor
+    - For any issues / Bugs or help, please add a comment in below wiki page.
+      [wiki page] (https://github.com/sashikaR/jwt-preProcessor)
 
 #### 1. Install Plugin
     a - Install via Jmeter Plugin Manager. Just search JWT PreProcessor in the plugin manager and install it.
