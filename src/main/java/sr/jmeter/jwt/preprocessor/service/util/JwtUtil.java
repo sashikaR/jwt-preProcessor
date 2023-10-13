@@ -1,13 +1,16 @@
 package sr.jmeter.jwt.preprocessor.service.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.WeakKeyException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bouncycastle.util.encoders.Base64;
 
+import javax.swing.*;
 import java.security.*;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -15,11 +18,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.*;
-
-import javax.swing.*;
 
 public class JwtUtil {
 
@@ -31,59 +29,63 @@ public class JwtUtil {
             log.error("The provided Private Key is not a valid one ...!");
             throw new InputMismatchException("Invalid private key :"+privateKeyString);
         }else {
-            // Decode the Base64-encoded private key string
-            byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyString);
+            // Remove the PEM header and footer and newline characters
+            String rsaPrivateKeyPem = privateKeyString
+                    .replace("-----BEGIN PRIVATE KEY-----", "")
+                    .replace("-----END PRIVATE KEY-----", "")
+                    .replaceAll("\\n", "");
 
-            // Create a KeyFactory instance for the desired algorithm (e.g., RSA)
-            KeyFactory keyFactory = null;
-            try {
-                keyFactory = KeyFactory.getInstance("RSA");
-            } catch (NoSuchAlgorithmException e) {
-                log.error("Your JDK does not have support for the RSA security algorithm. \n"+e.getMessage());
-                throw new RuntimeException(e);
-            }
+            // Base64 decode the private key
+            byte[] privateKeyBytes = Base64.decode(rsaPrivateKeyPem);
 
-            // Generate a PKCS8EncodedKeySpec object using the decoded private key bytes
+            // Create a PKCS8EncodedKeySpec from the bytes
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
 
-            // Generate the private key using the KeyFactory
-            try {
+            // Get the private key
+            try{
+                KeyFactory keyFactory = KeyFactory.getInstance("RSA");
                 privateKey = keyFactory.generatePrivate(keySpec);
+            } catch (NoSuchAlgorithmException e) {
+                log.error("The provided Private Key is not a valid RSA private key ...!");
+                log.error(e.getMessage());
+                throw new RuntimeException(e);
             } catch (InvalidKeySpecException e) {
-                log.error("Private key conversion has failed from provided key String. \n"+e.getMessage());
+                log.error("The provided Private Key is not a valid one ...!");
+                log.error(e.getMessage());
                 throw new RuntimeException(e);
             }
         }
         return privateKey;
     }
 
-    public static RSAPublicKey convertPublicKey(String publicKeyString) {
-        // Decode the Base64-encoded public key string
-        byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
+    public static PublicKey convertPublicKey(String publicKeyString) {
+        PublicKey publicKey = null;
+        // Remove the PEM header and footer and newline characters
+        String rsaPublicKeyPem = publicKeyString
+                .replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
+                .replaceAll("\\n", "");
 
-        // Create a KeyFactory instance for RSA
-        KeyFactory keyFactory = null;
-        try {
-            keyFactory = KeyFactory.getInstance("RSA");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        // Base64 decode the private key
+        byte[] publicKeyBytes = Base64.decode(rsaPublicKeyPem);
 
-        // Generate an X509EncodedKeySpec object using the decoded public key bytes
+        // Create a X509EncodedKeySpec from the bytes
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
 
-        // Generate the RSA public key using the KeyFactory
-        PublicKey publicKey = null;
-        try {
+        // Get the private key
+        try{
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             publicKey = keyFactory.generatePublic(keySpec);
+        } catch (NoSuchAlgorithmException e) {
+            log.error("The provided Private Key is not a valid RSA public key ...!");
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
         } catch (InvalidKeySpecException e) {
+            log.error("The provided Public Key is not a valid one ...!");
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
-
-        // Cast the PublicKey to RSAPublicKey
-        RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
-
-        return rsaPublicKey;
+        return publicKey;
     }
 
     public static Key convertSecretKey(String secretKey){

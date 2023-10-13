@@ -2,6 +2,7 @@ package sr.jmeter.jwt.preprocessor;
 
 import sr.jmeter.jwt.preprocessor.service.Algorithm;
 import sr.jmeter.jwt.preprocessor.service.HS256JwtServiceImpl;
+import sr.jmeter.jwt.preprocessor.service.RS256JwtServiceImpl;
 import sr.jmeter.jwt.preprocessor.service.util.JwtUtil;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +25,7 @@ public class JwtServiceWrapper {
             jwt = generateHS256signToken(JwtUtil.convertSecretKey(secretKey),jwtHeader,jwtPayload,jwtClaims);
         }else if(algorithm.equals(Algorithm.RS256.toString())){
             // Generate JWT with RS256 sign
-            jwt = generateHS256signToken(JwtUtil.convertPrivateKey(secretKey),jwtHeader,jwtPayload,jwtClaims);
+            jwt = generateRS256signToken(JwtUtil.convertPrivateKey(secretKey),jwtHeader,jwtPayload,jwtClaims);
         }else if(algorithm.equals(Algorithm.NO_SIGN.toString())){
             // Generate JWT with-out signing
             jwt = generateHS256signToken(null,jwtHeader,jwtPayload,jwtClaims);
@@ -68,5 +69,33 @@ public class JwtServiceWrapper {
             jwtHS256.setClaims(null);
         }
         return jwtHS256.generateJWT(jwtHS256);
+    }
+
+    private String generateRS256signToken(Key key, HashMap<String,String> jwtHeadersMap,
+                                          HashMap<String,String> jwtPayloadMap, HashMap<String,String> jwtClaimsMap){
+
+        // Generate a JwtService Object
+        RS256JwtServiceImpl jwtRS256 = new RS256JwtServiceImpl();
+
+        // set jwt headers
+        if(jwtHeadersMap !=null && !jwtHeadersMap.isEmpty()){
+            jwtRS256.setHeaders(jwtHeadersMap);
+        }
+        // set jwt payload values
+        jwtRS256.setAudience(jwtPayloadMap.get(JwtProperties.JWT_ATTR_AUDIENCE));
+        jwtRS256.setSigningKey(key);
+        jwtRS256.setSubject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_SUBJECT));
+        jwtRS256.setId(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ID));
+        jwtRS256.setIssuer(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUER));
+        jwtRS256.setExpirationTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_EXPIRE_TIME)));
+        jwtRS256.setNotBeforeTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_NOT_BEFORE_TIME)));
+        jwtRS256.setIssueAtTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUE_TIME)));
+        // set jwt headers
+        if(jwtClaimsMap !=null && !jwtClaimsMap.isEmpty()){
+            jwtRS256.setClaims(jwtClaimsMap);
+        }else {
+            jwtRS256.setClaims(null);
+        }
+        return jwtRS256.generateJWT(jwtRS256);
     }
 }
