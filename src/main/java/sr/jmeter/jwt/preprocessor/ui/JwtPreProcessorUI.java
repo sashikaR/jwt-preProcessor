@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,7 +24,7 @@ import static sr.jmeter.jwt.preprocessor.service.util.JwtUtil.getTableData;
 public class JwtPreProcessorUI extends AbstractPreProcessorGui {
 
     private final JTextField textField;
-    private final JTextField txtFieldSecretKey = new JTextField();;
+    private final JTextArea txtAreaSecretKey = new JTextArea();;
     private final JRadioButton buttonHS256 = new JRadioButton();
     private final JRadioButton buttonRS256 = new JRadioButton();
     private final JRadioButton buttonNoSigning = new JRadioButton();
@@ -85,7 +84,7 @@ public class JwtPreProcessorUI extends AbstractPreProcessorGui {
         super.configureTestElement(testElement);
         if (testElement instanceof JwtPreProcessor) {
             JwtPreProcessor jwtPreProcessor = (JwtPreProcessor) testElement;
-            jwtPreProcessor.setSecretKey(txtFieldSecretKey.getText());
+            jwtPreProcessor.setSecretKey(txtAreaSecretKey.getText());
             jwtPreProcessor.setAlgorithm(getSelectedAlgorithm());
             jwtPreProcessor.setJwtHeaderData(filterEmptyRows(getTableData(jwtHeaderTable)));
             jwtPreProcessor.setJwtPayloadData(filterEmptyRows(getTableData(jwtPayloadTable)));
@@ -113,7 +112,7 @@ public class JwtPreProcessorUI extends AbstractPreProcessorGui {
         if (testElement instanceof JwtPreProcessor) {
             JwtPreProcessor jwtPreProcessor = (JwtPreProcessor) testElement;
             // set secretKey
-            txtFieldSecretKey.setText(jwtPreProcessor.getSecretKey());
+            txtAreaSecretKey.setText(jwtPreProcessor.getSecretKey());
 
             // set Algorithm selection
             setSelectedAlgorithm(jwtPreProcessor.getAlgorithm());
@@ -301,7 +300,7 @@ public class JwtPreProcessorUI extends AbstractPreProcessorGui {
         Box keyTextField = Box.createHorizontalBox();
         JLabel labelSecret = new JLabel("Secret Key:");
         keyTextField.add(labelSecret);
-        keyTextField.add(txtFieldSecretKey);
+        keyTextField.add(txtAreaSecretKey);
         // Add textField box into vertical-box
         jBoxSigningKey.add(keyTextField,BorderLayout.EAST);
 

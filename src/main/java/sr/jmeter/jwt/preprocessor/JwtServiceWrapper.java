@@ -12,6 +12,8 @@ import sr.jmeter.jwt.preprocessor.service.util.JwtProperties;
 import java.security.Key;
 import java.util.HashMap;
 
+import static sr.jmeter.jwt.preprocessor.service.util.JwtProperties.JWT_PAYLOAD_DEFAULT_ATTR_VALUE;
+
 public class JwtServiceWrapper {
 
     private static final Logger log = LogManager.getLogger(JwtServiceWrapper.class);
@@ -54,11 +56,19 @@ public class JwtServiceWrapper {
             jwtHS256.setHeaders(jwtHeadersMap);
         }
         // set jwt payload values
-        jwtHS256.setAudience(jwtPayloadMap.get(JwtProperties.JWT_ATTR_AUDIENCE));
+        if(!jwtPayloadMap.get(JwtProperties.JWT_ATTR_AUDIENCE).equals(JWT_PAYLOAD_DEFAULT_ATTR_VALUE)){
+            jwtHS256.setAudience(jwtPayloadMap.get(JwtProperties.JWT_ATTR_AUDIENCE));
+        }
         jwtHS256.setSigningKey(key);
-        jwtHS256.setSubject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_SUBJECT));
-        jwtHS256.setId(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ID));
-        jwtHS256.setIssuer(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUER));
+        if(jwtPayloadMap.get(JwtProperties.JWT_ATTR_SUBJECT).equals(JWT_PAYLOAD_DEFAULT_ATTR_VALUE)){
+            jwtHS256.setSubject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_SUBJECT));
+        }
+        if(!jwtPayloadMap.get(JwtProperties.JWT_ATTR_ID).equals(JWT_PAYLOAD_DEFAULT_ATTR_VALUE)){
+            jwtHS256.setId(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ID));
+        }
+        if(!jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUER).equals(JWT_PAYLOAD_DEFAULT_ATTR_VALUE)){
+            jwtHS256.setIssuer(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUER));
+        }
         jwtHS256.setExpirationTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_EXPIRE_TIME)));
         jwtHS256.setNotBeforeTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_NOT_BEFORE_TIME)));
         jwtHS256.setIssueAtTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUE_TIME)));
@@ -82,11 +92,19 @@ public class JwtServiceWrapper {
             jwtRS256.setHeaders(jwtHeadersMap);
         }
         // set jwt payload values
-        jwtRS256.setAudience(jwtPayloadMap.get(JwtProperties.JWT_ATTR_AUDIENCE));
+        if(!jwtPayloadMap.get(JwtProperties.JWT_ATTR_AUDIENCE).equals(JWT_PAYLOAD_DEFAULT_ATTR_VALUE)){
+            jwtRS256.setAudience(jwtPayloadMap.get(JwtProperties.JWT_ATTR_AUDIENCE));
+        }
         jwtRS256.setSigningKey(key);
-        jwtRS256.setSubject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_SUBJECT));
-        jwtRS256.setId(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ID));
-        jwtRS256.setIssuer(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUER));
+        if(!jwtPayloadMap.get(JwtProperties.JWT_ATTR_SUBJECT).equals(JWT_PAYLOAD_DEFAULT_ATTR_VALUE)){
+            jwtRS256.setSubject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_SUBJECT));
+        }
+        if(!jwtPayloadMap.get(JwtProperties.JWT_ATTR_ID).equals(JWT_PAYLOAD_DEFAULT_ATTR_VALUE)){
+            jwtRS256.setId(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ID));
+        }
+        if(!jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUER).equals(JWT_PAYLOAD_DEFAULT_ATTR_VALUE)){
+            jwtRS256.setIssuer(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUER));
+        }
         jwtRS256.setExpirationTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_EXPIRE_TIME)));
         jwtRS256.setNotBeforeTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_NOT_BEFORE_TIME)));
         jwtRS256.setIssueAtTime(JwtUtil.convertToDateObject(jwtPayloadMap.get(JwtProperties.JWT_ATTR_ISSUE_TIME)));
